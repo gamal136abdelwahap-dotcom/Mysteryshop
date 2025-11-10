@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختر القسم - متجر الألعاب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  /* الشعار كعلامة مائية كبيرة جدًا */
+  .watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(300px, 60vw, 1000px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    opacity: 0.05;
+    text-shadow: 
+      0 0 50px rgba(102, 126, 234, 0.3),
+      0 0 100px rgba(102, 126, 234, 0.2),
+      0 0 150px rgba(102, 126, 234, 0.1);
+    white-space: nowrap;
+  }
+
+  header {
+    width: 100%;
+    max-width: 1200px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: clamp(24px, 5vw, 42px);
+    margin-bottom: clamp(30px, 5vh, 60px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+    z-index: 2;
+    position: relative;
+    font-weight: bold;
+    padding: 0 15px;
+    line-height: 1.3;
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    z-index: 2;
+  }
+
+  .section-btn {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: clamp(18px, 3vw, 25px) clamp(30px, 5vw, 60px);
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4), inset 0 -3px 5px rgba(0,0,0,0.2);
+    transition: all 0.4s ease;
+    overflow: visible;
+  }
+
+  /* شكل السحابة */
+  .section-btn::before,
+  .section-btn::after {
+    content: '';
+    position: absolute;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+  }
+
+  .section-btn::before {
+    width: clamp(35px, 6vw, 50px);
+    height: clamp(35px, 6vw, 50px);
+    top: 50%;
+    left: clamp(-18px, -3vw, -25px);
+    transform: translateY(-50%);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  .section-btn::after {
+    width: clamp(28px, 5vw, 40px);
+    height: clamp(28px, 5vw, 40px);
+    top: 50%;
+    right: clamp(-14px, -2.5vw, -20px);
+    transform: translateY(-50%);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .section-btn span {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  
+  .section-btn span.one { 
+    width: clamp(15px, 3vw, 20px);
+    height: clamp(15px, 3vw, 20px);
+    top: clamp(-8px, -1.5vw, -10px);
+    left: 30%;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+  }
+  
+  .section-btn span.two { 
+    width: clamp(18px, 3.5vw, 25px);
+    height: clamp(18px, 3.5vw, 25px);
+    top: clamp(-10px, -2vw, -15px);
+    right: 25%;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .section-btn:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6), inset 0 -5px 10px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+  }
+
+  .section-btn:active {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  }
+
+  /* للشاشات الصغيرة جداً (الهواتف الصغيرة) */
+  @media (max-width: 480px) {
+    body {
+      padding: 15px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+
+    .buttons-container {
+      gap: 12px;
+    }
+
+    .section-btn {
+      padding: 15px 25px;
+      font-size: 16px;
+    }
+
+    .watermark {
+      font-size: 250px;
+    }
+  }
+
+  /* للأجهزة اللوحية (Tablets) */
+  @media (min-width: 481px) and (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      margin-bottom: 40px;
+    }
+
+    .buttons-container {
+      max-width: 450px;
+    }
+
+    .section-btn {
+      padding: 20px 45px;
+      font-size: 20px;
+    }
+  }
+
+  /* للشاشات الكبيرة (الكمبيوتر واللابتوب) */
+  @media (min-width: 769px) {
+    .buttons-container {
+      max-width: 500px;
+    }
+  }
+
+  /* للشاشات الكبيرة جداً */
+  @media (min-width: 1400px) {
+    .buttons-container {
+      max-width: 600px;
+    }
+
+    .section-btn {
+      padding: 28px 70px;
+      font-size: 24px;
+    }
+  }
+
+  /* للوضع الأفقي في الهواتف */
+  @media (max-height: 500px) and (orientation: landscape) {
+    h1 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .buttons-container {
+      flex-direction: row;
+      max-width: 100%;
+      gap: 10px;
+    }
+
+    .section-btn {
+      padding: 12px 20px;
+      font-size: 14px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- شعار خلفي ضخم مع إضاءة -->
+<div class="watermark">MS</div>
+
+<header>
+  <!-- يمكن إزالة أي شعار إضافي -->
+</header>
+
+<h1>اختر القسم الذي تريد تصفحه</h1>
+
+<div class="buttons-container">
+  <button class="section-btn" onclick="chooseSection('robux')">
+    روبكس
+    <span class="one"></span>
+    <span class="two"></span>
+  </button>
+
+  <button class="section-btn" onclick="chooseSection('farm_map')">
+    ماب المزرعة
+    <span class="one"></span>
+    <span class="two"></span>
+  </button>
+
+  <button class="section-btn" onclick="chooseSection('heist_map')">
+    ماب السرقة
+    <span class="one"></span>
+    <span class="two"></span>
+  </button>
+</div>
+
+<script>
+function chooseSection(section) {
+  localStorage.setItem('selectedSection', section);
+  window.location.href = 'store.html';
+}
+</script>
+
+</body>
+</html>
